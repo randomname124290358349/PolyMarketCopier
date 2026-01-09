@@ -1,7 +1,9 @@
 
 # Import modules
 from modules.PolyClasses import PolyMarketController
+from modules.ConfigValidator import ConfigValidator
 import asyncio
+import sys
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -10,6 +12,11 @@ load_dotenv()
 
 
 if __name__ == "__main__":
+    # Validate configuration
+    validator = ConfigValidator()
+    if not validator.validate():
+        sys.exit(1)
+
     pmc = PolyMarketController(
         private_key                 = os.getenv("PRIVATE_KEY"),
         founder_key                 = os.getenv("FUNDER_ADDRESS"),
