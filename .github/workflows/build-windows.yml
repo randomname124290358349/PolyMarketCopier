@@ -29,7 +29,8 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        uv run pip install pyinstaller
+        uv sync
+        uv add pyinstaller
         uv run pyinstaller --onefile --name PolyMarketCopier-Windows main.py
 
     - name: Release
