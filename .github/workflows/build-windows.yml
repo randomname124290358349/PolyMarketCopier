@@ -1,0 +1,55 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+
+    - name: Set up Python
+      run: uv python install 3.13
+
+    - name: Install dependencies
+      run: uv sync
+
+    - name: Build with PyInstaller
+      run: |
+        uv run pip install pyinstaller
+        uv run pyinstaller --onefile --name PolyMarketCopier main.py
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: PolyMarketCopier-Windows
+        path: dist/PolyMarketCopier.exe
+
+    - name: Create and Push Tag
+      if: github.event_name == 'workflow_dispatch'
+      shell: pwsh
+      run: |
+        $version = "${{ inputs.version }}"
+        if (-not $version.StartsWith("v")) {
+          $version = "v$version"
+        }
+        Write-Host "Tagging commit with $version"
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git tag $version
+        git push origin $version
