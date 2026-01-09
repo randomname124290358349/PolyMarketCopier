@@ -1,8 +1,6 @@
 
 # Import modules
 from modules.PolyClasses import PolyMarketController
-from py_clob_client.clob_types import OrderArgs, OrderType, OpenOrderParams
-from time import sleep
 import asyncio
 
 # Load environment variables
