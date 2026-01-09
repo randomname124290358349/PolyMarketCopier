@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Database
+trades.db
+trades.db-wal
+trades.db-shm
+
+# Envs
+.env
+
