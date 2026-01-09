@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: write
-  workflows: write
 
 jobs:
   build:
@@ -31,24 +30,12 @@ jobs:
     - name: Build with PyInstaller
       run: |
         uv run pip install pyinstaller
-        uv run pyinstaller --onefile --name PolyMarketCopier main.py
+        uv run pyinstaller --onefile --name PolyMarketCopier-Windows main.py
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+    - name: Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: PolyMarketCopier-Windows
-        path: dist/PolyMarketCopier.exe
-
-    - name: Create and Push Tag
-      if: github.event_name == 'workflow_dispatch'
-      shell: pwsh
-      run: |
-        $version = "${{ inputs.version }}"
-        if (-not $version.StartsWith("v")) {
-          $version = "v$version"
-        }
-        Write-Host "Tagging commit with $version"
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git tag $version
-        git push origin $version
+        tag_name: ${{ inputs.version }}
+        files: dist/PolyMarketCopier-Windows.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
