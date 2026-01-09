@@ -17,3 +17,5 @@ trades.db-shm
 # Envs
 .env
 
+# Other
+wallets.txt
