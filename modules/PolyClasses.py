@@ -225,8 +225,8 @@ class PolyMarketController:
                 signed = await asyncio.to_thread(self.CLOB_CLIENT.create_order, order)
                 resp   = await asyncio.to_thread(self.CLOB_CLIENT.post_order, signed, OrderType.GTC)
                 
-                self.logger.info(f"Order placed. ID: {resp.get('orderID')}. Waiting 10s...")
-                await asyncio.sleep(10)
+                self.logger.info(f"Order placed. ID: {resp.get('orderID')}. Waiting {self.limit_order_timeout}s...")
+                await asyncio.sleep(self.limit_order_timeout)
 
                 open_orders = await asyncio.to_thread(self.CLOB_CLIENT.get_orders, OpenOrderParams())
                 for order in open_orders:
