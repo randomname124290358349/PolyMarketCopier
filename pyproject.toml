@@ -7,5 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "dotenv>=0.9.9",
     "py-clob-client>=0.34.4",
+    "pyqt6>=6.10.2",
+    "qasync>=0.28.0",
     "requests>=2.32.5",
 ]

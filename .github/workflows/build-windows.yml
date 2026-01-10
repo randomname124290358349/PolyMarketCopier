@@ -31,7 +31,7 @@ jobs:
       run: |
         uv sync
         uv add pyinstaller
-        uv run pyinstaller --onefile --name PolyMarketCopier-Windows main.py
+        uv run pyinstaller --onefile --name PolyMarketCopier-Windows --noconsole gui.py
 
     - name: Release
       uses: softprops/action-gh-release@v2
